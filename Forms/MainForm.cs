@@ -15,13 +15,15 @@ namespace KS_Tar
         public long MemoryLim;
         public int TimeLim;
         public string Email;
+        public string EmailBody;
 
-        public SelectedParams(Drive drive, long memory,int time,string email)
+        public SelectedParams(Drive drive, long memory,int time,string email, string emailBody)
         {
             Drive = drive;
             MemoryLim = memory;
             TimeLim = time;
             Email = email;
+            EmailBody = emailBody;
         }
     }
     public delegate void SomeAction();
@@ -31,6 +33,7 @@ namespace KS_Tar
         private SelectedParams _selectedParams = new SelectedParams();
         public bool IfOptionsFileExist = false;
         public string email = string.Empty;
+        public string emailBody = string.Empty;
         public mainForm()
         {
             InitializeComponent();
@@ -54,7 +57,7 @@ namespace KS_Tar
                 var sr = new StreamReader("email.ini");
                 email=sr.ReadToEnd();
                 sr = new StreamReader("message.ini");
-                sr.ReadToEnd();
+                emailBody=sr.ReadToEnd();
                 IfOptionsFileExist = true;
             }
             catch
@@ -108,9 +111,16 @@ namespace KS_Tar
             sP.TimeLim = Options.TimeIntervals[comboBoxTimeInterval.SelectedIndex];
             sP.MemoryLim= Options.MemoryLimits[comboBoxMemoryLimit.SelectedIndex];
             if (IfOptionsFileExist)
+            {
                 sP.Email = email;
+                sP.EmailBody = emailBody;
+            }
             else
+            {
                 sP.Email = string.Empty;
+                sP.EmailBody = string.Empty;
+            }
+
 
         }
 
@@ -126,7 +136,7 @@ namespace KS_Tar
                 
                 Thread.Sleep(_selectedParams.TimeLim);
             }
-            EmailSender.SendMail(_selectedParams.Email);
+            EmailSender.SendMail(_selectedParams.Email,_selectedParams.EmailBody);
         }
 
         private void OperationDone()
