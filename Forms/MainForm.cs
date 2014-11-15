@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows.Forms;
 using KS_Tar.Classes;
 using KS_Tar.Forms;
+using KS_Tar.OptionRepository;
 
 namespace KS_Tar
 {
@@ -14,65 +15,40 @@ namespace KS_Tar
         public Drive Drive;
         public long MemoryLim;
         public int TimeLim;
-        public string Email;
-        public string EmailBody;
-
-        public SelectedParams(Drive drive, long memory,int time,string email, string emailBody)
+        
+        public SelectedParams(Drive drive, long memory,int time)
         {
             Drive = drive;
             MemoryLim = memory;
             TimeLim = time;
-            Email = email;
-            EmailBody = emailBody;
         }
     }
-    public delegate void SomeAction();
     public partial class mainForm : Form
     {
+        private IOptionRepository _optionRepository=new OptionRepository.OptionRepository();
+        public Options UserOptions;
         private readonly List<Drive> _drives ;
         private SelectedParams _selectedParams = new SelectedParams();
         public bool IfOptionsFileExist = false;
-        public string email = string.Empty;
-        public string emailBody = string.Empty;
         public mainForm()
         {
             InitializeComponent();
-
+            UserOptions=_optionRepository.GetOption();
             _drives = MemoryChecker.GetListOfDrives();
             foreach (var d in MemoryChecker.ListOfDriveNames(_drives))
             {
                 comboBoxDrives.Items.Add(d);
             }
-            foreach (var limit in Options.MemoryLimits)
+            foreach (var limit in Options.MemoryLimitsArray)
             {
                 comboBoxMemoryLimit.Items.Add(limit);
             }
 
-            foreach (var interval in Options.TimeIntervals)
+            foreach (var interval in Options.TimeIntervalsArray)
             {
                 comboBoxTimeInterval.Items.Add(interval);
             }
-            try
-            {
-                var sr = new StreamReader("email.ini");
-                email=sr.ReadToEnd();
-                sr = new StreamReader("message.ini");
-                emailBody=sr.ReadToEnd();
-                IfOptionsFileExist = true;
-            }
-            catch
-            {
-                using (StreamWriter outfile = new StreamWriter("email.ini"))
-                {
-                    outfile.Write(string.Empty);
-                }
-                using (StreamWriter outfile = new StreamWriter("message.ini"))
-                {
-                    outfile.Write(string.Empty);
-                }
-                IfOptionsFileExist = false;
-            }
-            
+           
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -82,15 +58,23 @@ namespace KS_Tar
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            GetParams(ref _selectedParams);
-            ProcessStart();
-            backgroundWorker.RunWorkerAsync();
-         }
+            if (UserOptions.OptionExist)
+            {
+                GetParams(ref _selectedParams);
+                ProcessStart();
+                backgroundWorker.RunWorkerAsync();
+            }
+            else
+            {
+                MessageBox.Show("Ви не встановили налаштування", "Options not set", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            OperationDone();
             backgroundWorker.Dispose();
+            OperationDone();
         }
 
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -108,20 +92,8 @@ namespace KS_Tar
         private void GetParams(ref SelectedParams sP)
         {
             sP.Drive= _drives[comboBoxDrives.SelectedIndex];
-            sP.TimeLim = Options.TimeIntervals[comboBoxTimeInterval.SelectedIndex];
-            sP.MemoryLim= Options.MemoryLimits[comboBoxMemoryLimit.SelectedIndex];
-            if (IfOptionsFileExist)
-            {
-                sP.Email = email;
-                sP.EmailBody = emailBody;
-            }
-            else
-            {
-                sP.Email = string.Empty;
-                sP.EmailBody = string.Empty;
-            }
-
-
+            sP.TimeLim = Options.TimeIntervalsArray[comboBoxTimeInterval.SelectedIndex];
+            sP.MemoryLim= Options.MemoryLimitsArray[comboBoxMemoryLimit.SelectedIndex];
         }
 
         private void Operation()
@@ -136,7 +108,7 @@ namespace KS_Tar
                 
                 Thread.Sleep(_selectedParams.TimeLim);
             }
-            EmailSender.SendMail(_selectedParams.Email,_selectedParams.EmailBody);
+            EmailSender.SendMail(UserOptions.EmailTo,UserOptions.FromEmail,UserOptions.FromEmailPassword,UserOptions.EmailSubject,UserOptions.EmailBody);
         }
 
         private void OperationDone()
@@ -156,6 +128,7 @@ namespace KS_Tar
         {
             Form aF=new AboutForm();
             aF.ShowDialog();
+
         }
 
     }

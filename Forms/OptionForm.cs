@@ -8,18 +8,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using KS_Tar.Classes;
+using KS_Tar.OptionRepository;
 
 namespace KS_Tar.Forms
 {
     public partial class OptionForm : Form
     {
+        public IOptionRepository OptionsRepository=new OptionRepository.OptionRepository();
+        public Options UserOptions;
         public OptionForm()
         {
             InitializeComponent();
-            var sr = new StreamReader("email.ini");
-            txtEmail.Text = sr.ReadToEnd();
-            sr=new StreamReader("message.ini");
-            richTxtBoxMessage.Text = sr.ReadToEnd();
+            UserOptions = OptionsRepository.GetOption();
+            txtEmail.Text = UserOptions.EmailTo;
+            txtSenderEmail.Text = UserOptions.FromEmail;
+            txtSenderEmaiPass.Text = UserOptions.FromEmailPassword;
+            txtEmailSubject.Text = UserOptions.EmailSubject;
+            richTxtMessage.Text = UserOptions.EmailBody;
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -30,15 +36,16 @@ namespace KS_Tar.Forms
         private void btnSave_Click(object sender, EventArgs e)
         {
             
-            using (StreamWriter outfile = new StreamWriter("email.ini"))
-            {
-                outfile.Write(txtEmail.Text);
-            }
-            using (StreamWriter outfile = new StreamWriter("message.ini"))
-            {
-                outfile.Write(richTxtBoxMessage.Text);
-            }
+            OptionsRepository.SaveOption
+            (
+              txtEmail.Text,
+              txtSenderEmail.Text,
+              txtSenderEmaiPass.Text,
+              txtEmailSubject.Text,
+              richTxtMessage.Text
+            );
             Close();
         }
-    }
+
+     }
 }

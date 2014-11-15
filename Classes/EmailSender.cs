@@ -7,7 +7,7 @@ namespace KS_Tar.Classes
 {
     class EmailSender
     {
-        public static void SendMail(string email, string emailBody)
+        public static void SendMail(string emailTo,string emailFrom,string emaiFromPass,string emailSubject, string emailBody)
         {
             try
             {
@@ -18,11 +18,11 @@ namespace KS_Tar.Classes
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.UseDefaultCredentials = false;
                 client.Credentials = new NetworkCredential(
-                  "ivan.syhestkiy@gmail.com", "fibonachi!!@#%*");
+                  emailFrom, emaiFromPass);
                 MailMessage msg = new MailMessage();
-                msg.To.Add(email);
-                msg.From = new MailAddress("ivan.syhestkiy@gmail.com");
-                msg.Subject = "memory is almost over";
+                msg.To.Add(emailTo);
+                msg.From = new MailAddress(emailFrom);
+                msg.Subject = emailSubject;
                 msg.Body = emailBody;
                 client.Send(msg);
                 MessageBox.Show("Successfully Sent Message.");
