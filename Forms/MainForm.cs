@@ -131,5 +131,48 @@ namespace KS_Tar
 
         }
 
+        private void mainForm_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                Hide();
+                notifyIcon.Visible = true;
+            }
+            else
+            {
+                ShowInTaskbar = true;
+                notifyIcon.Visible = false;
+            }
+        }
+
+        private void показатиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Normal;
+            this.Focus();
+        }
+
+        private void вихідToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            WindowState = FormWindowState.Normal;
+        }
+
+        private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dr=MessageBox.Show("Видійсно хочете вийти", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            if(dr==DialogResult.Yes)
+            {
+                Dispose(true);
+                Application.Exit();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }
