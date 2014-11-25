@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using KS_Tar.Classes;
 using KS_Tar.Forms;
 using KS_Tar.OptionRepository;
@@ -15,8 +16,8 @@ namespace KS_Tar
         public Drive Drive;
         public long MemoryLim;
         public int TimeLim;
-        
-        public SelectedParams(Drive drive, long memory,int time)
+
+        public SelectedParams(Drive drive, long memory, int time)
         {
             Drive = drive;
             MemoryLim = memory;
@@ -25,15 +26,15 @@ namespace KS_Tar
     }
     public partial class mainForm : Form
     {
-        private IOptionRepository _optionRepository=new OptionRepository.OptionRepository();
+        private IOptionRepository _optionRepository = new OptionRepository.OptionRepository();
         public Options UserOptions;
-        private readonly List<Drive> _drives ;
+        private readonly List<Drive> _drives;
         private SelectedParams _selectedParams = new SelectedParams();
         public bool IfOptionsFileExist = false;
         public mainForm()
         {
             InitializeComponent();
-            UserOptions=_optionRepository.GetOption();
+            UserOptions = _optionRepository.GetOption();
             _drives = MemoryChecker.GetListOfDrives();
             foreach (var d in MemoryChecker.ListOfDriveNames(_drives))
             {
@@ -48,7 +49,7 @@ namespace KS_Tar
             {
                 comboBoxTimeInterval.Items.Add(interval);
             }
-           
+
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -58,17 +59,27 @@ namespace KS_Tar
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if (UserOptions.OptionExist)
+            if (comboBoxDrives.SelectedIndex == -1 || comboBoxMemoryLimit.SelectedIndex == -1 ||
+                comboBoxTimeInterval.SelectedIndex == -1)
             {
-                GetParams(ref _selectedParams);
-                ProcessStart();
-                backgroundWorker.RunWorkerAsync();
+                MessageBox.Show("Ви не задали параметри роботи", "Options not set", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             else
             {
-                MessageBox.Show("Ви не встановили налаштування", "Options not set", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                if (UserOptions.OptionExist)
+                {
+                    GetParams(ref _selectedParams);
+                    ProcessStart();
+                    backgroundWorker.RunWorkerAsync();
+                }
+                else
+                {
+                    MessageBox.Show("Ви не встановили налаштування", "Options not set", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
+
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -91,9 +102,9 @@ namespace KS_Tar
 
         private void GetParams(ref SelectedParams sP)
         {
-            sP.Drive= _drives[comboBoxDrives.SelectedIndex];
+            sP.Drive = _drives[comboBoxDrives.SelectedIndex];
             sP.TimeLim = Options.TimeIntervalsArray[comboBoxTimeInterval.SelectedIndex];
-            sP.MemoryLim= Options.MemoryLimitsArray[comboBoxMemoryLimit.SelectedIndex];
+            sP.MemoryLim = Options.MemoryLimitsArray[comboBoxMemoryLimit.SelectedIndex];
         }
 
         private void Operation()
@@ -105,10 +116,10 @@ namespace KS_Tar
                     backgroundWorker.Dispose();
                     break;
                 }
-                
+
                 Thread.Sleep(_selectedParams.TimeLim);
             }
-            EmailSender.SendMail(UserOptions.EmailTo,UserOptions.FromEmail,UserOptions.FromEmailPassword,UserOptions.EmailSubject,UserOptions.EmailBody);
+            EmailSender.SendMail(UserOptions.EmailTo, UserOptions.FromEmail, UserOptions.FromEmailPassword, UserOptions.EmailSubject, UserOptions.EmailBody);
         }
 
         private void OperationDone()
@@ -120,13 +131,13 @@ namespace KS_Tar
 
         private void налаштуванняToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           Form oF=new OptionForm();
+            Form oF = new OptionForm();
             oF.ShowDialog();
         }
 
         private void проToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form aF=new AboutForm();
+            Form aF = new AboutForm();
             aF.ShowDialog();
 
         }
@@ -147,7 +158,9 @@ namespace KS_Tar
 
         private void показатиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            WindowState = FormWindowState.Normal;
+            ShowInTaskbar = true;
+            this.Show();
+            this.WindowState = FormWindowState.Maximized;
             this.Focus();
         }
 
@@ -158,13 +171,17 @@ namespace KS_Tar
 
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            WindowState = FormWindowState.Normal;
+            this.Show();
+            ShowInTaskbar = true;
+            this.WindowState = FormWindowState.Normal;
+            
+
         }
 
         private void mainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult dr=MessageBox.Show("Видійсно хочете вийти", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-            if(dr==DialogResult.Yes)
+            DialogResult dr = MessageBox.Show("Видійсно хочете вийти", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+            if (dr == DialogResult.Yes)
             {
                 Dispose(true);
                 Application.Exit();

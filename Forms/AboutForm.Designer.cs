@@ -35,12 +35,13 @@
             // lblAbout
             // 
             this.lblAbout.AutoSize = true;
-            this.lblAbout.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblAbout.Location = new System.Drawing.Point(12, 65);
+            this.lblAbout.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblAbout.Location = new System.Drawing.Point(12, 28);
             this.lblAbout.Name = "lblAbout";
-            this.lblAbout.Size = new System.Drawing.Size(409, 31);
+            this.lblAbout.Size = new System.Drawing.Size(421, 87);
             this.lblAbout.TabIndex = 0;
-            this.lblAbout.Text = "Тут може бути ваша реклама";
+            this.lblAbout.Text = "Курсовий проект студента групи\r\n                        КІт-13-2 \r\n             Л" +
+    "исишина Тараса";
             // 
             // btnOk
             // 
@@ -56,7 +57,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(434, 216);
+            this.ClientSize = new System.Drawing.Size(444, 216);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.lblAbout);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
