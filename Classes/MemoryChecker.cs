@@ -28,7 +28,7 @@ namespace KS_Tar.Classes
 
         public static long GetFreeSpace(DriveInfo drive)
         {
-            long variable = long.MaxValue;
+            var variable = long.MaxValue;
             return variable;
         }
     }

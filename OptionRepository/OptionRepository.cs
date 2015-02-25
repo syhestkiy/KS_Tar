@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
 using KS_Tar.Classes;
+using KS_Tar.LoggerService;
 
 namespace KS_Tar.OptionRepository
 {
@@ -21,6 +22,8 @@ namespace KS_Tar.OptionRepository
                 outfile.Write(options);
                 outfile.Dispose();
             }
+
+            Logger.GetInstance().Log("Налаштування були змінені");
         }
 
         public Options GetOption()

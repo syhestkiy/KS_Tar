@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace KS_Tar.Classes
 {
@@ -6,16 +7,16 @@ namespace KS_Tar.Classes
     {
        public string Name { get; set; }
         public string Format { get; set; }
-        public long AvailableFreeSpace { get; set; }
-        public long TotalFreeSpace { get; set; }
+        public double AvailableFreeSpace { get; set; }
+        public double TotalFreeSpace { get; set; }
         public long TotalSize { get; set; }
 
         public Drive(DriveInfo d)
         {
             Name = d.Name;
             Format = d.DriveFormat;
-            AvailableFreeSpace = d.AvailableFreeSpace;
-            TotalFreeSpace = d.TotalFreeSpace/(1024*1024*1024);
+            AvailableFreeSpace = Math.Round((double)d.AvailableFreeSpace / (1024 * 1024 * 1024),1);
+            TotalFreeSpace = Math.Round((double)d.TotalFreeSpace/(1024*1024*1024),1);
             TotalSize = d.TotalSize;
         }
     }

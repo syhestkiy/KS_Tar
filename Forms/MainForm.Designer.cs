@@ -48,6 +48,7 @@
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.показатиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.вихідToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.вільнеМісцеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -56,7 +57,8 @@
             // 
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.налаштуванняToolStripMenuItem,
-            this.проToolStripMenuItem});
+            this.проToolStripMenuItem,
+            this.вільнеМісцеToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
             this.mainMenu.Size = new System.Drawing.Size(294, 24);
@@ -79,7 +81,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(207, 172);
+            this.btnExit.Location = new System.Drawing.Point(198, 170);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 4;
@@ -90,7 +92,7 @@
             // comboBoxDrives
             // 
             this.comboBoxDrives.FormattingEnabled = true;
-            this.comboBoxDrives.Location = new System.Drawing.Point(23, 50);
+            this.comboBoxDrives.Location = new System.Drawing.Point(14, 48);
             this.comboBoxDrives.Name = "comboBoxDrives";
             this.comboBoxDrives.Size = new System.Drawing.Size(119, 21);
             this.comboBoxDrives.TabIndex = 6;
@@ -99,7 +101,7 @@
             // lblDrives
             // 
             this.lblDrives.AutoSize = true;
-            this.lblDrives.Location = new System.Drawing.Point(20, 34);
+            this.lblDrives.Location = new System.Drawing.Point(11, 32);
             this.lblDrives.Name = "lblDrives";
             this.lblDrives.Size = new System.Drawing.Size(169, 13);
             this.lblDrives.TabIndex = 7;
@@ -108,7 +110,7 @@
             // lblLimit
             // 
             this.lblLimit.AutoSize = true;
-            this.lblLimit.Location = new System.Drawing.Point(20, 74);
+            this.lblLimit.Location = new System.Drawing.Point(11, 72);
             this.lblLimit.Name = "lblLimit";
             this.lblLimit.Size = new System.Drawing.Size(70, 13);
             this.lblLimit.TabIndex = 9;
@@ -117,7 +119,7 @@
             // comboBoxMemoryLimit
             // 
             this.comboBoxMemoryLimit.FormattingEnabled = true;
-            this.comboBoxMemoryLimit.Location = new System.Drawing.Point(23, 90);
+            this.comboBoxMemoryLimit.Location = new System.Drawing.Point(14, 88);
             this.comboBoxMemoryLimit.Name = "comboBoxMemoryLimit";
             this.comboBoxMemoryLimit.Size = new System.Drawing.Size(119, 21);
             this.comboBoxMemoryLimit.TabIndex = 8;
@@ -130,7 +132,7 @@
             // lblTimeInterval
             // 
             this.lblTimeInterval.AutoSize = true;
-            this.lblTimeInterval.Location = new System.Drawing.Point(20, 114);
+            this.lblTimeInterval.Location = new System.Drawing.Point(11, 112);
             this.lblTimeInterval.Name = "lblTimeInterval";
             this.lblTimeInterval.Size = new System.Drawing.Size(164, 13);
             this.lblTimeInterval.TabIndex = 11;
@@ -139,7 +141,7 @@
             // comboBoxTimeInterval
             // 
             this.comboBoxTimeInterval.FormattingEnabled = true;
-            this.comboBoxTimeInterval.Location = new System.Drawing.Point(23, 130);
+            this.comboBoxTimeInterval.Location = new System.Drawing.Point(14, 128);
             this.comboBoxTimeInterval.Name = "comboBoxTimeInterval";
             this.comboBoxTimeInterval.Size = new System.Drawing.Size(119, 21);
             this.comboBoxTimeInterval.TabIndex = 10;
@@ -147,7 +149,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(23, 172);
+            this.btnStart.Location = new System.Drawing.Point(14, 170);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 12;
@@ -157,7 +159,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(114, 172);
+            this.btnStop.Location = new System.Drawing.Point(105, 170);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 13;
@@ -199,11 +201,18 @@
             this.вихідToolStripMenuItem.Text = "Вихід";
             this.вихідToolStripMenuItem.Click += new System.EventHandler(this.вихідToolStripMenuItem_Click);
             // 
+            // вільнеМісцеToolStripMenuItem
+            // 
+            this.вільнеМісцеToolStripMenuItem.Name = "вільнеМісцеToolStripMenuItem";
+            this.вільнеМісцеToolStripMenuItem.Size = new System.Drawing.Size(89, 20);
+            this.вільнеМісцеToolStripMenuItem.Text = "Вільне місце";
+            this.вільнеМісцеToolStripMenuItem.Click += new System.EventHandler(this.вільнеМісцеToolStripMenuItem_Click);
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(294, 209);
+            this.ClientSize = new System.Drawing.Size(294, 203);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.lblTimeInterval);
@@ -250,6 +259,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem показатиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem вихідToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem вільнеМісцеToolStripMenuItem;
     }
 }
 

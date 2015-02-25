@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using KS_Tar.Classes;
 using KS_Tar.Forms;
+using KS_Tar.LoggerService;
 using KS_Tar.OptionRepository;
 
 namespace KS_Tar
@@ -34,6 +33,7 @@ namespace KS_Tar
         public mainForm()
         {
             InitializeComponent();
+            Logger.GetInstance().Log("Додаток почав свою роботу");
             UserOptions = _optionRepository.GetOption();
             _drives = MemoryChecker.GetListOfDrives();
             foreach (var d in MemoryChecker.ListOfDriveNames(_drives))
@@ -183,6 +183,7 @@ namespace KS_Tar
             DialogResult dr = MessageBox.Show("Видійсно хочете вийти", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
             if (dr == DialogResult.Yes)
             {
+                Logger.GetInstance().Log("Додаток було закрито");
                 Dispose(true);
                 Application.Exit();
             }
@@ -190,6 +191,12 @@ namespace KS_Tar
             {
                 e.Cancel = true;
             }
+        }
+
+        private void вільнеМісцеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form viewMemoryForm=new ViewFreeMemoryForm();
+            viewMemoryForm.Show();
         }
     }
 }

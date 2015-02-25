@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 using System.Windows.Forms;
+using KS_Tar.LoggerService;
 
 namespace KS_Tar.Classes
 {
@@ -26,10 +27,12 @@ namespace KS_Tar.Classes
                 msg.Body = emailBody;
                 client.Send(msg);
                 MessageBox.Show("Successfully Sent Message.");
+                Logger.GetInstance().Log("Повідомлення з темою "+emailSubject+" було успішно відправлено до "+emailTo);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                Logger.GetInstance().Log("Помилка відправлення повідомлення: "+ex.Message);
             }
         }
     }
